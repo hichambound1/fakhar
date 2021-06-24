@@ -47,6 +47,9 @@
                                         action
                                     </th>
                                     <th>
+                                        role
+                                    </th>
+                                    <th>
                                         Email
                                     </th>
                                     <th>
@@ -63,6 +66,7 @@
                                     <td> {{$item->id}} </td>
                                     <td> {{$item->name}} </td>
                                     <td> {{$item->action}} </td>
+                                    <td> {{$item->role}} </td>
                                     <td> {{$item->email}}</td>
                                     <td>
                                         <a href="{{ route('users.edit',$item)}}">

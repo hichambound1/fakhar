@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Charge;
 use App\Models\Commend;
 use App\Models\Commend_Element;
 use App\Models\User;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use PhpParser\Node\Stmt\Return_;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -22,21 +24,56 @@ class UserController extends Controller
     {
         $cmd= Commend::all();
         $articles= Article::all();
+        $charges= Charge::all();
         $users= User::all();
+
+
         $categories= Category::all();
         $total_cmd=0;
+        $total_cmd_with_passager=0;
+        $total_charges=0;
 
-        foreach($cmd as $item){
-            foreach( $item->commend_elements as $item1){
-                $total_cmd += (int)$item1->prix;
+
+        $user_passager = DB::table('users')
+            ->where('role', '!=', 'passager')
+
+            ->get();
+
+
+
+        foreach($users as $item){
+            if($item->role !== 'passager'){
 
             }
-
         }
 
 
 
-        return view('dashboard.dashboard',['cmd'=>$cmd,'categories'=>$categories,'users'=>$users,'total_cmd'=>$total_cmd,'articles'=>$articles]);
+
+
+        foreach($cmd as $item){
+            if($item->user->role !== 'passager'){
+                foreach( $item->commend_elements as $item1){
+                    $total_cmd += (int)$item1->prix;
+                }
+            }
+        }
+        foreach($cmd as $item){
+
+                foreach( $item->commend_elements as $item1){
+                    $total_cmd_with_passager += (int)$item1->prix;
+                }
+
+        }
+
+        foreach($charges as $item){
+
+                $total_charges += (int)$item->prix;
+        }
+
+
+
+        return view('dashboard.dashboard',['total_cmd_with_passager'=>$total_cmd_with_passager,'user_passager'=>$user_passager,'total_charges'=>$total_charges,'charges'=>$charges,'cmd'=>$cmd,'categories'=>$categories,'users'=>$users,'total_cmd'=>$total_cmd,'articles'=>$articles]);
     }
     public function index()
     {
@@ -72,12 +109,19 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
+        $action =0;
+        if($request->role='passager'){
+            $action=0;
+        }else{
+            $action= $request->action;
+        }
+
         User::create([
             'name'=>$request->name,
             'prenom'=>$request->prenom,
             'tel'=>$request->tel,
             'cin'=>$request->cin,
-            'action'=>$request->action,
+            'action'=>$action,
             'role'=>$request->role,
             'email'=>$request->email,
             'password'=>bcrypt($request->password),
@@ -136,6 +180,7 @@ class UserController extends Controller
         $user->prenom=$request->prenom;
         $user->cin=$request->cin;
         $user->action=$request->action;
+        $user->role=$request->role;
         $user->tel=$request->tel;
         $user->email=$request->email;
         $user->save();

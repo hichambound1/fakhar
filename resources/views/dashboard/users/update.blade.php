@@ -56,8 +56,17 @@
                                 <div class="form-group">
                                     <label class="bmd-label-floating" for="role">role</label>
                                     <select name="role" class="form-control" id="role">
-                                        <option value="admin">admin</option>
-                                        <option value="user">user</option>
+                                        <option @if ($user->role==='admin')
+                                            selected
+                                        @endif value="admin">admin</option>
+
+                                        <option @if ($user->role==='user')
+                                            selected
+                                        @endif value="user">user</option>
+
+                                        <option @if ($user->role==='passager')
+                                            selected
+                                        @endif value="passager">passager</option>
                                     </select>
                                 </div>
                             </div>
