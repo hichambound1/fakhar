@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommendController;
 use App\Http\Controllers\VenteController;
 use App\Http\Controllers\Vente_ElementController;
 use App\Http\Controllers\Commend_ElementController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('ventes', VenteController::class);
     Route::resource('ventes_elements', Vente_ElementController::class);
     Route::resource('commends_elements', Commend_ElementController::class);
+    Route::resource('charges', ChargeController::class);
 
 });
 

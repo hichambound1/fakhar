@@ -26,22 +26,15 @@
             <p>articles</p>
           </a>
         </li>
-        {{-- <li class="nav-item @if (request()->route()->uri=='ventes_elements')
+        <li class="nav-item @if (request()->route()->uri=='charges')
             active
              @endif">
-          <a class="nav-link" href="{{route('ventes_elements.index')}}">
+          <a class="nav-link" href="{{route('charges.index')}}">
             <i class="material-icons">list</i>
-            <p>Vente Element</p>
+            <p>charges</p>
           </a>
-        </li> --}}
-        {{-- <li class="nav-item @if (request()->route()->uri=='commends_elements')
-            active
-             @endif">
-          <a class="nav-link" href="{{route('commends_elements.index')}}">
-            <i class="material-icons">list</i>
-            <p>Command Element</p>
-          </a>
-        </li> --}}
+        </li>
+
         <li class="nav-item  @if (request()->route()->uri=='realisations')
             active
              @endif">
